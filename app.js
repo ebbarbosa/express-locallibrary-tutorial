@@ -6,9 +6,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var mongoose = require('mongoose');
-var mongodb = mongoose.connect('mongodb://127.0.0.1:27017/local_library');
-mongoose.connect(mongodb, {
-  useMongoClient : true
+mongoose.connect('mongodb://127.0.0.1:27017/local_library', {
+  useMongoClient: true
 });
 mongoose.Promise = global.Promise;
 var db = mongoose.connection;
@@ -37,14 +36,14 @@ app.use('/users', users);
 app.use('/catalog', catalog);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

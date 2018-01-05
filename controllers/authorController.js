@@ -1,4 +1,6 @@
 var Author = require('../models/author');
+var Book = require('../models/book');
+var async = require('async');
 
 exports.author_list = function (req, res) {
     Author.find()
@@ -11,7 +13,27 @@ exports.author_list = function (req, res) {
 
 // Display detail page for a specific Author
 exports.author_detail = function (req, res) {
-    res.send('NOT IMPLEMENTED: Author detail: ' + req.params.id);
+
+    async.parallel({
+        author: function (callback) {
+            Author.findById(req.params.id)
+                .exec(callback)
+        },
+        author_books: function (callback) {
+            Book.find({ 'author': req.params.id })
+                .exec(callback);
+        }
+    }, function (err, results) {
+        if (err) { next(err); }
+        if (results.author == null){
+            err = new Error('Author not found');
+            res.status(404);
+            next(err);
+        }
+        res.render('author_detail', { title: 'Author', author: results.author, author_books: results.author_books });
+    });
+
+
 };
 
 // Display Author create form on GET

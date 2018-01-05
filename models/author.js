@@ -18,7 +18,7 @@ AuthorSchema.virtual('url').get(function () {
     return '/catalog/author/' + this._id;
 });
 
-AuthorSchema.virtual('memento').get(function () {
+AuthorSchema.virtual('lifespan').get(function () {
     var birth = this.date_of_birth ? moment(this.date_of_birth).format('MM-DD-YYYY') : '';
     var death = this.date_of_death ? moment(this.date_of_death).format('MM-DD-YYYY') : '';
     return birth + " - " + death;
